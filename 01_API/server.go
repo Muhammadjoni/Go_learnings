@@ -28,7 +28,7 @@ func main() {
 
 	server := gin.New()
 
-	server.Use(gin.Recovery(), middleware.Logger())
+	server.Use(gin.Recovery(), middleware.Logger(), middleware.BaseAuth())
 
 	// server.GET("/testingApi", func(ctx *gin.Context) {
 	// 	ctx.JSON(200, gin.H{
@@ -44,5 +44,5 @@ func main() {
 		ctx.JSON(http.StatusOK, videoController.Save(ctx))
 	})
 
-	server.Run("")
+	server.Run(":8080")
 }
