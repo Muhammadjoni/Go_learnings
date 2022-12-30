@@ -1,28 +1,15 @@
 package main
 
 import (
-	"fmt"
-	"gin-todo-prc/Config"
-	Models "gin-todo-prc/models"
+	"gin-todo-prc/cmd"
 	"gin-todo-prc/routes"
-	//"gorm.io/gorm"
+
+	_ "github.com/lib/pq"
 )
 
-var err error
-
 func main() {
-
-	//Config.DB, err = gorm.Open("mysql", Config.DbURL(Config.BuildDBConfig()))
-
-	if err != nil {
-		fmt.Println("status: ", err)
-	}
-
-	//defer Config.DB.Close()
-
-	Config.DB.AutoMigrate(Models.Todo{})
-
+	// SetupPostgres()
+	cmd.Execute()
 	r := routes.SetupRouter()
-
-	r.Run()
+	r.Run(":8080")
 }

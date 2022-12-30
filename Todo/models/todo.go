@@ -1,7 +1,7 @@
-package Models
+package models
 
 type Todo struct {
-	ID          uint   `json:"id"`
-	Title       string `json:"title"`
-	Description string `json:"description"`
+	Id   uint   `json:"id"`
+	Task string `json:"task"`
+	Done bool   `json:"done"`
 }
