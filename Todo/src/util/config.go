@@ -1,10 +1,10 @@
 package util
 
 import (
-	"database/sql"
 	"fmt"
 	"log"
 
+	"github.com/jmoiron/sqlx"
 	"github.com/spf13/viper"
 )
 
@@ -14,6 +14,7 @@ type Config struct {
 	User     string `mapstructure:"DB_USER"`
 	Password string `mapstructure:"DB_PASSWORD"`
 	Dbname   string `mapstructure:"DB_NAME"`
+	// SSLMode  string "disabled"
 }
 
 // LoadConfig reads configuration from file or environment variables.
@@ -33,7 +34,7 @@ func LoadConfig(path string) (config Config, err error) {
 	return
 }
 
-func SetupDb() *sql.DB {
+func ConnectToDb() (*sqlx.DB, error) {
 
 	config, err := LoadConfig(".")
 	if err != nil {
@@ -44,8 +45,7 @@ func SetupDb() *sql.DB {
 		"password=%s dbname=%s sslmode=disable",
 		config.Host, config.Port, config.User, config.Password, config.Dbname)
 
-	fmt.Println(psqlInfo)
-	db, err := sql.Open("postgres", psqlInfo)
+	db, err := sqlx.Connect("postgres", psqlInfo)
 
 	if err != nil {
 		panic(err)
@@ -57,5 +57,5 @@ func SetupDb() *sql.DB {
 	}
 	log.Println("Successfully connected to the database!!!")
 
-	return db
+	return db, nil
 }

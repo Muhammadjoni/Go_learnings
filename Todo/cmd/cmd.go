@@ -8,7 +8,7 @@ import (
 
 var rootCmd = &cobra.Command{
 	Use:   "app",
-	Short: "App desc",
+	Short: "Simple todo Application",
 }
 
 func Execute() {

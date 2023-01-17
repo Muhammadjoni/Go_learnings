@@ -3,10 +3,11 @@ package cmd
 import (
 	"fmt"
 
-	"gin-todo-prc/migrations"
-	"gin-todo-prc/util"
+	"gin-todo-prc/src/migrations"
+	"gin-todo-prc/src/util"
 
 	"github.com/spf13/cobra"
+	// "go.uber.org/zap"
 )
 
 var migrateCmd = &cobra.Command{
@@ -45,7 +46,11 @@ var upCmd = &cobra.Command{
 			return
 		}
 
-		db := util.SetupDb()
+		// db := util.ConnectToDb()
+		db, err := util.ConnectToDb()
+		if err != nil {
+			panic(err)
+		}
 
 		migrator, err := migrations.Init(db)
 		if err != nil {
@@ -71,10 +76,14 @@ var downCmd = &cobra.Command{
 		step, err := cmd.Flags().GetInt("step")
 		if err != nil {
 			fmt.Println("Unable to read flag `step`")
-			return
+			panic(err)
 		}
 
-		db := util.SetupDb()
+		// db := util.SetupDb()
+		db, err := util.ConnectToDb()
+		if err != nil {
+			panic(err)
+		}
 
 		migrator, err := migrations.Init(db)
 		if err != nil {
@@ -85,7 +94,7 @@ var downCmd = &cobra.Command{
 		err = migrator.Down(step)
 		if err != nil {
 			fmt.Println("Unable to run `down` migrations")
-			return
+			panic(err)
 		}
 	},
 }
@@ -94,13 +103,17 @@ var statusCmd = &cobra.Command{
 	Use:   "status",
 	Short: "display status of each migrations",
 	Run: func(cmd *cobra.Command, args []string) {
-		db := util.SetupDb()
+		db, err := util.ConnectToDb()
+		if err != nil {
+			panic(err)
+		}
+
 		fmt.Println("util.SetupDb")
 
 		migrator, err := migrations.Init(db)
 		if err != nil {
 			fmt.Println("Unable to fetch migrator")
-			return
+			panic(err)
 		}
 
 		if err := migrator.MigrationStatus(); err != nil {
@@ -108,6 +121,7 @@ var statusCmd = &cobra.Command{
 			return
 		}
 
+		fmt.Println("Migration status -> success")
 		return
 	},
 }

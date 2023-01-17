@@ -9,6 +9,8 @@ import (
 	"html/template"
 	"os"
 	"time"
+
+	"github.com/jmoiron/sqlx"
 )
 
 // to define Migration
@@ -21,7 +23,7 @@ type Migration struct {
 
 // to define Migrator
 type Migrator struct {
-	db         *sql.DB
+	db         *sqlx.DB
 	Versions   []string
 	Migrations map[string]*Migration
 }
@@ -86,7 +88,7 @@ func Create(name string) error {
 	return nil
 }
 
-func Init(db *sql.DB) (*Migrator, error) {
+func Init(db *sqlx.DB) (*Migrator, error) {
 	migrator.db = db
 	fmt.Println("91")
 	// Create `schema_migrations` table to remember which migrations were executed.
@@ -148,15 +150,17 @@ func (m *Migrator) Up(step int) error {
 		}
 
 		fmt.Println("Running migration", mg.Version)
+		fmt.Println("HEllllllll")
 		if err := mg.Up(tx); err != nil {
 			tx.Rollback()
 			return err
 		}
 		fmt.Println("migrator.155")
-		if _, err := tx.Exec(`INSERT INTO schema_migrations (version) VALUES ?`, mg.Version); err != nil {
+		if _, err := tx.Exec(`INSERT INTO schema_migrations (version) VALUES ($1)`, mg.Version); err != nil {
 			tx.Rollback()
 			return err
 		}
+		// }`INSERT INTO schema_migrations (version) VALUES ?`
 		fmt.Println("Finished running migration", mg.Version)
 		fmt.Println("migrator.161")
 
@@ -189,10 +193,10 @@ func (m *Migrator) Down(step int) error {
 		fmt.Println("Reverting Migration", mg.Version)
 		if err := mg.Down(tx); err != nil {
 			tx.Rollback()
-			return err
+			panic(err)
 		}
 
-		if _, err := tx.Exec("DELETE FROM `schema_migrations` WHERE version = ?", mg.Version); err != nil {
+		if _, err := tx.Exec("DELETE FROM schema_migrations WHERE version = ($1)", mg.Version); err != nil {
 			tx.Rollback()
 			return err
 		}
