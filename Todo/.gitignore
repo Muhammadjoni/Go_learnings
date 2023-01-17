@@ -1,12 +1,1 @@
-.DS_Store
-.o
-/app.env
-.log
-/Dockerfile
-/docker-compose.yml
-
-#ignores all the .md files
-*.md
-
-# does not ignore the README.md file
-!README.md
+app,env
