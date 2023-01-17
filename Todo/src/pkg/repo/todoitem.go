@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 
 	todoapp "gin-todo-prc/src/models"
 )
@@ -72,6 +72,10 @@ func (r *TodoItemDb) GetByID(userID, itemID int) (todoapp.TodoItem, error) {
 }
 
 func (r *TodoItemDb) Update(userID, itemID int, input todoapp.UpdateItemInput) error {
+
+	logger, _ := zap.NewDevelopment()
+	defer logger.Sync()
+
 	setValues := make([]string, 0)
 	args := make([]interface{}, 0)
 	argID := 1
@@ -99,8 +103,8 @@ func (r *TodoItemDb) Update(userID, itemID int, input todoapp.UpdateItemInput) e
 		todoItemsTable, setQuery, listsItemsTable, usersListsTable, argID, argID+1)
 	args = append(args, userID, itemID)
 
-	logrus.Debugf("itemUpdateQuery %s\n", query)
-	logrus.Debugf("args: %s", args)
+	logger.Sugar().Debugf("itemUpdateQuery %s\n", query)
+	logger.Sugar().Debugf("args: %s", args)
 
 	_, err := r.db.Exec(query, args...)
 

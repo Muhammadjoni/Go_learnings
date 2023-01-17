@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/sirupsen/logrus"
+	"go.uber.org/zap"
 )
 
 type TodoListDb struct {
@@ -56,6 +56,9 @@ func (r *TodoListDb) GetByID(userID, id int) (todoapp.TodoList, error) {
 }
 
 func (r TodoListDb) Update(userID, listID int, input *todoapp.UpdateListInput) error {
+	logger, _ := zap.NewDevelopment()
+	defer logger.Sync()
+
 	setValues := make([]string, 0, 2)
 	args := make([]interface{}, 0, 2)
 	argID := 1
@@ -75,8 +78,8 @@ func (r TodoListDb) Update(userID, listID int, input *todoapp.UpdateListInput) e
 	query := fmt.Sprintf("UPDATE %s tl SET %s FROM %s ul WHERE tl.id = ul.list_id AND ul.list_id = $%d AND ul.user_id = $%d", todoListsTable, setQuery, usersListsTable, argID, argID+1)
 	args = append(args, listID, userID)
 
-	logrus.Debugf("listUpdateQuery %s\n", query)
-	logrus.Debugf("args: %s", args)
+	logger.Sugar().Debugf("listUpdateQuery %s\n", query)
+	logger.Sugar().Debugf("args: %s", args)
 
 	_, err := r.db.Exec(query, args...)
 	return err
