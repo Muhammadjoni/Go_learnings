@@ -1,8 +1,8 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "API Server for TODO Application",
-        "title": "Todo App API",
+        "description": "TODO list Application with some basic CRUD apis",
+        "title": "Todo List App",
         "contact": {},
         "version": "1.0"
     },
