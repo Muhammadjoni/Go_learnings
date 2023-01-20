@@ -9,6 +9,21 @@ import (
 	todoapp "gin-todo-prc/src/models"
 )
 
+//	@Tags			items
+//	@Summary		Create Item
+//	@Description	Creating new item inside the list for current user
+//	@Accept			json
+//	@Produce		json
+//	@param			Authorization	header		string				true	"Bearer Auth, pls add bearer before"
+//	@Param			payload			body		todoapp.TodoItem	true	"item info"
+//	@Param			id				path		int					true	"id"
+//	@Success		201				{string}	string				"id"
+//
+// Failure default {object} errorResponse
+// Failure 400,404 {object} errorResponse
+// Failure 500 {object} errorResponse
+//
+//	@Router			/api/lists/{id}/items [post]
 func (h *Handler) createItem(c *gin.Context) {
 	userID, err := getUserID(c)
 	if err != nil {
@@ -42,6 +57,21 @@ type getAllItemsResponse struct {
 	Data []todoapp.TodoItem
 }
 
+//	@Tags			items
+//	@Summary		Get all items
+//	@Description	Get all items from the list of current user
+//	@Accept			json
+//	@Produce		json
+//	@param			Authorization	header		string				true	"Bearer Auth, pls add bearer before"
+//	@Param			payload			body		todoapp.TodoItem	true	"item info"
+//	@Param			id				path		int					true	"id"
+//	@Success		201				{string}	string				"id"
+//
+// Failure default {object} errorResponse
+// Failure 400,404 {object} errorResponse
+// Failure 500 {object} errorResponse
+//
+//	@Router			/api/lists/:id/items [post]
 func (h *Handler) getAllItem(c *gin.Context) {
 	userID, err := getUserID(c)
 	if err != nil {
@@ -65,6 +95,21 @@ func (h *Handler) getAllItem(c *gin.Context) {
 	})
 }
 
+//	@Tags			items
+//	@Summary		Get item by Id
+//	@Description	Get items Id for current user
+//	@Accept			json
+//	@Produce		json
+//	@param			Authorization	header		string				true	"Bearer Auth, pls add bearer before"
+//	@Param			payload			body		todoapp.TodoItem	true	"item info"
+//	@Param			id				path		int					true	"id"
+//	@Success		201				{string}	string				"id"
+//
+// Failure default {object} errorResponse
+// Failure 400,404 {object} errorResponse
+// Failure 500 	   {object} errorResponse
+//
+//	@Router			/api/items/:id [get]
 func (h *Handler) getItemByID(c *gin.Context) {
 	userID, err := getUserID(c)
 	if err != nil {
