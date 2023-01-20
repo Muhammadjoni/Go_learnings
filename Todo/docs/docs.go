@@ -53,7 +53,9 @@ const docTemplate = `{
                         }
                     }
                 }
-            },
+            }
+        },
+        "/api/items/{item_id}": {
             "put": {
                 "description": "Updating an item by a its id for current user",
                 "consumes": [
@@ -216,7 +218,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/lists/{id}": {
+        "/api/lists/{list_id}": {
             "get": {
                 "description": "Get list by a specific id for current user",
                 "consumes": [
@@ -594,12 +596,12 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "1.0",
+	Version:          "1,0",
 	Host:             "localhost:8080",
 	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "Todo List App",
-	Description:      "Todo list application",
+	Title:            "Todo List",
+	Description:      "todo list application simple crud project",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }

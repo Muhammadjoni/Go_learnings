@@ -1,8 +1,8 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "TODO list Application with some basic CRUD apis",
-        "title": "Todo List App",
+        "description": "API Server for TODO Application",
+        "title": "Todo App API",
         "contact": {},
         "version": "1.0"
     },
@@ -46,7 +46,9 @@
                         }
                     }
                 }
-            },
+            }
+        },
+        "/api/items/{item_id}": {
             "put": {
                 "description": "Updating an item by a its id for current user",
                 "consumes": [
@@ -209,7 +211,7 @@
                 }
             }
         },
-        "/api/lists/{id}": {
+        "/api/lists/{list_id}": {
             "get": {
                 "description": "Get list by a specific id for current user",
                 "consumes": [

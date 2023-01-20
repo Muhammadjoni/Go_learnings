@@ -99,7 +99,7 @@ func (h *Handler) getAllList(c *gin.Context) {
 // Failure 400,404 {object} errorResponse
 // Failure 500 	   {object} errorResponse
 //
-//	@Router			/api/lists/{id} [get]
+//	@Router			/api/lists/{list_id} [get]
 func (h *Handler) getListByID(c *gin.Context) {
 	var (
 		userID, id int
@@ -138,7 +138,7 @@ func (h *Handler) getListByID(c *gin.Context) {
 // Failure 400,404 {object} errorResponse
 // Failure 500 {object} errorResponse
 //
-//	@Router			/api/lists/{id} [put]
+//	@Router			/api/lists/{list_id} [put]
 func (h *Handler) updateList(c *gin.Context) {
 	var (
 		userID, id int
@@ -183,7 +183,7 @@ func (h *Handler) updateList(c *gin.Context) {
 // Failure 400,404 {object} errorResponse
 // Failure 500 {object} errorResponse
 //
-//	@Router			/api/lists/{id} [delete]
+//	@Router			/api/lists/{list_id} [delete]
 func (h *Handler) deleteList(c *gin.Context) {
 	var (
 		userID, id int

@@ -66,31 +66,6 @@ info:
   contact: {}
 paths:
   /api/items/{id}:
-    delete:
-      consumes:
-      - application/json
-      description: Deleting an item by a its id for current user
-      parameters:
-      - description: Bearer Auth, pls add bearer before
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      - description: item_id
-        in: path
-        name: item_id
-        required: true
-        type: integer
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: status
-          schema:
-            type: string
-      summary: Delete an Item
-      tags:
-      - items
     get:
       consumes:
       - application/json
@@ -114,6 +89,32 @@ paths:
           schema:
             $ref: '#/definitions/models.TodoItem'
       summary: Get item by Id
+      tags:
+      - items
+  /api/items/{item_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deleting an item by a its id for current user
+      parameters:
+      - description: Bearer Auth, pls add bearer before
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: item_id
+        in: path
+        name: item_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status
+          schema:
+            type: string
+      summary: Delete an Item
       tags:
       - items
     put:
@@ -199,7 +200,7 @@ paths:
       summary: Create List
       tags:
       - lists
-  /api/lists/{id}:
+  /api/lists/{list_id}:
     delete:
       consumes:
       - application/json

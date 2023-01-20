@@ -139,7 +139,7 @@ func (h *Handler) getItemByID(c *gin.Context) {
 // Failure 400,404 {object} errorResponse
 // Failure 500 {object} errorResponse
 //
-//	@Router			/api/items/{id} [put]
+//	@Router			/api/items/{item_id} [put]
 func (h *Handler) updateItem(c *gin.Context) {
 	var (
 		userID, itemID int
@@ -187,7 +187,7 @@ func (h *Handler) updateItem(c *gin.Context) {
 // Failure 400,404 {object} errorResponse
 // Failure 500 {object} errorResponse
 //
-//	@Router			/api/items/{id} [delete]
+//	@Router			/api/items/{item_id} [delete]
 func (h *Handler) deleteItem(c *gin.Context) {
 	var (
 		userID, itemID int
