@@ -14,7 +14,6 @@ type statusResponse struct {
 }
 
 func newErrorResponse(c *gin.Context, statusCode int, message string) {
-	// zap.Error(message)
 	zap.String("error", message)
 
 	c.AbortWithStatusJSON(statusCode, errorResponse{message})
