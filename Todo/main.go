@@ -33,8 +33,7 @@ import (
 
 // }
 var (
-	db  *sqlx.DB
-	err error
+	db *sqlx.DB
 )
 
 func main() {
