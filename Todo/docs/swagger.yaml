@@ -1,5 +1,5 @@
 definitions:
-  handler.signInInput:
+  models.SignInInput:
     properties:
       password:
         type: string
@@ -22,6 +22,33 @@ definitions:
     required:
     - title
     type: object
+  models.TodoList:
+    properties:
+      description:
+        type: string
+      id:
+        type: integer
+      title:
+        type: string
+    required:
+    - title
+    type: object
+  models.UpdateItemInput:
+    properties:
+      description:
+        type: string
+      done:
+        type: boolean
+      title:
+        type: string
+    type: object
+  models.UpdateListInput:
+    properties:
+      description:
+        type: string
+      title:
+        type: string
+    type: object
   models.User:
     properties:
       name:
@@ -38,23 +65,42 @@ definitions:
 info:
   contact: {}
 paths:
-  /api/items/:id:
+  /api/items/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deleting an item by a its id for current user
+      parameters:
+      - description: Bearer Auth, pls add bearer before
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: item_id
+        in: path
+        name: item_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status
+          schema:
+            type: string
+      summary: Delete an Item
+      tags:
+      - items
     get:
       consumes:
       - application/json
-      description: Get items Id for current user
+      description: Get item by specific id for current user
       parameters:
       - description: Bearer Auth, pls add bearer before
         in: header
         name: Authorization
         required: true
         type: string
-      - description: item info
-        in: body
-        name: payload
-        required: true
-        schema:
-          $ref: '#/definitions/models.TodoItem'
       - description: id
         in: path
         name: id
@@ -63,46 +109,204 @@ paths:
       produces:
       - application/json
       responses:
-        "201":
-          description: id
+        "200":
+          description: OK
           schema:
-            type: string
+            $ref: '#/definitions/models.TodoItem'
       summary: Get item by Id
       tags:
       - items
-  /api/lists/:id/items:
-    post:
+    put:
       consumes:
       - application/json
-      description: Get all items from the list of current user
+      description: Updating an item by a its id for current user
       parameters:
       - description: Bearer Auth, pls add bearer before
         in: header
         name: Authorization
         required: true
         type: string
-      - description: item info
+      - description: ' update item info'
         in: body
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/models.TodoItem'
-      - description: id
+          $ref: '#/definitions/models.UpdateItemInput'
+      - description: item_id
         in: path
-        name: id
+        name: item_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status
+          schema:
+            type: string
+      summary: Update an Item
+      tags:
+      - items
+  /api/lists:
+    get:
+      consumes:
+      - application/json
+      description: Get all todo lists of current user
+      parameters:
+      - description: Bearer Auth, pls add bearer before
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: onject
+      summary: Get all lists
+      tags:
+      - lists
+    post:
+      consumes:
+      - application/json
+      description: Creating new todo list  for current user
+      parameters:
+      - description: Bearer Auth, pls add bearer before
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: list info
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/models.TodoList'
+      - description: list_id
+        in: path
+        name: list_id
         required: true
         type: integer
       produces:
       - application/json
       responses:
         "201":
-          description: id
+          description: list_id
           schema:
             type: string
+      summary: Create List
+      tags:
+      - lists
+  /api/lists/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Deleting a list by a its id for current user
+      parameters:
+      - description: Bearer Auth, pls add bearer before
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: list_id
+        in: path
+        name: list_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status
+          schema:
+            type: string
+      summary: Delete a list
+      tags:
+      - lists
+    get:
+      consumes:
+      - application/json
+      description: Get list by a specific id for current user
+      parameters:
+      - description: Bearer Auth, pls add bearer before
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: list_id
+        in: path
+        name: list_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.TodoItem'
+      summary: Get list by Id
+      tags:
+      - lists
+    put:
+      consumes:
+      - application/json
+      description: Updating a List by a its id for current user
+      parameters:
+      - description: Bearer Auth, pls add bearer before
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: ' update item info'
+        in: body
+        name: payload
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateListInput'
+      - description: list_id
+        in: path
+        name: list_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: status
+          schema:
+            type: string
+      summary: Update a List
+      tags:
+      - lists
+  /api/lists/{list_id}/items:
+    get:
+      consumes:
+      - application/json
+      description: Get all items from the given list of current user
+      parameters:
+      - description: Bearer Auth, pls add bearer before
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: list_id
+        in: path
+        name: list_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: onject
       summary: Get all items
       tags:
       - items
-  /api/lists/{id}/items:
     post:
       consumes:
       - application/json
@@ -119,9 +323,9 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/models.TodoItem'
-      - description: id
+      - description: list_id
         in: path
-        name: id
+        name: list_id
         required: true
         type: integer
       produces:
@@ -145,7 +349,7 @@ paths:
         name: payload
         required: true
         schema:
-          $ref: '#/definitions/handler.signInInput'
+          $ref: '#/definitions/models.SignInInput'
       produces:
       - application/json
       responses:

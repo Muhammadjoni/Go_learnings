@@ -9,6 +9,21 @@ import (
 	todoapp "gin-todo-prc/src/models"
 )
 
+//	@Tags			lists
+//	@Summary		Create List
+//	@Description	Creating new todo list  for current user
+//	@Accept			json
+//	@Produce		json
+//	@param			Authorization	header		string				true	"Bearer Auth, pls add bearer before"
+//	@Param			payload			body		todoapp.TodoList	true	"list info"
+//	@Param			list_id			path		int					true	"list_id"
+//	@Success		201				{string}	string				"list_id"
+//
+// Failure default {object} errorResponse
+// Failure 400,404 {object} errorResponse
+// Failure 500 {object} errorResponse
+//
+//	@Router			/api/lists [post]
 func (h *Handler) createList(c *gin.Context) {
 	var (
 		userID, listID int
@@ -37,10 +52,19 @@ func (h *Handler) createList(c *gin.Context) {
 	})
 }
 
-type getAllListsResponse struct {
-	Data []todoapp.TodoList `json:"data"`
-}
-
+//	@Tags			lists
+//	@Summary		Get all lists
+//	@Description	Get all todo lists of current user
+//	@Accept			json
+//	@Produce		json
+//	@param			Authorization	header		string				true	"Bearer Auth, pls add bearer before"
+//	@Success		200				{onject}    todoapp.GetAllListsResponse
+//
+// Failure default {object} errorResponse
+// Failure 400,404 {object} errorResponse
+// Failure 500 {object} errorResponse
+//
+//	@Router			/api/lists [get]
 func (h *Handler) getAllList(c *gin.Context) {
 	var (
 		userID int
@@ -57,11 +81,25 @@ func (h *Handler) getAllList(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, getAllListsResponse{
+	c.JSON(http.StatusOK, todoapp.GetAllListsResponse{
 		Data: lists,
 	})
 }
 
+//	@Tags			lists
+//	@Summary		Get list by Id
+//	@Description	Get list by a specific id for current user
+//	@Accept			json
+//	@Produce		json
+//	@param			Authorization	header		string				true	"Bearer Auth, pls add bearer before"
+//	@Param			list_id			path		int					true	"list_id"
+//	@Success		200				{object}	todoapp.TodoItem
+//
+// Failure default {object} errorResponse
+// Failure 400,404 {object} errorResponse
+// Failure 500 	   {object} errorResponse
+//
+//	@Router			/api/lists/{id} [get]
 func (h *Handler) getListByID(c *gin.Context) {
 	var (
 		userID, id int
@@ -86,6 +124,21 @@ func (h *Handler) getListByID(c *gin.Context) {
 	c.JSON(http.StatusOK, list)
 }
 
+//	@Tags			lists
+//	@Summary		Update a List
+//	@Description	Updating a List by a its id for current user
+//	@Accept			json
+//	@Produce		json
+//	@param			Authorization	header		string				true	"Bearer Auth, pls add bearer before"
+//	@Param			payload			body		todoapp.UpdateListInput	true	" update item info"
+//	@Param			list_id			path		int					true	"list_id"
+//	@Success		200				{string}	string				"status"
+//
+// Failure default {object} errorResponse
+// Failure 400,404 {object} errorResponse
+// Failure 500 {object} errorResponse
+//
+//	@Router			/api/lists/{id} [put]
 func (h *Handler) updateList(c *gin.Context) {
 	var (
 		userID, id int
@@ -117,6 +170,20 @@ func (h *Handler) updateList(c *gin.Context) {
 	})
 }
 
+//	@Tags			lists
+//	@Summary		Delete a list
+//	@Description	Deleting a list by a its id for current user
+//	@Accept			json
+//	@Produce		json
+//	@param			Authorization	header		string				true	"Bearer Auth, pls add bearer before"
+//	@Param			list_id			path		int					true	"list_id"
+//	@Success		200				{string}	string				"status"
+//
+// Failure default {object} errorResponse
+// Failure 400,404 {object} errorResponse
+// Failure 500 {object} errorResponse
+//
+//	@Router			/api/lists/{id} [delete]
 func (h *Handler) deleteList(c *gin.Context) {
 	var (
 		userID, id int

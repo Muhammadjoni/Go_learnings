@@ -16,9 +16,9 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
-        "/api/items/:id": {
+        "/api/items/{id}": {
             "get": {
-                "description": "Get items Id for current user",
+                "description": "Get item by specific id for current user",
                 "consumes": [
                     "application/json"
                 ],
@@ -38,15 +38,6 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "item info",
-                        "name": "payload",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.TodoItem"
-                        }
-                    },
-                    {
                         "type": "integer",
                         "description": "id",
                         "name": "id",
@@ -55,8 +46,91 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "201": {
-                        "description": "id",
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.TodoItem"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Updating an item by a its id for current user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "items"
+                ],
+                "summary": "Update an Item",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer Auth, pls add bearer before",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": " update item info",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateItemInput"
+                        }
+                    },
+                    {
+                        "type": "integer",
+                        "description": "item_id",
+                        "name": "item_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Deleting an item by a its id for current user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "items"
+                ],
+                "summary": "Delete an Item",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer Auth, pls add bearer before",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "item_id",
+                        "name": "item_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status",
                         "schema": {
                             "type": "string"
                         }
@@ -64,9 +138,209 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/lists/:id/items": {
+        "/api/lists": {
+            "get": {
+                "description": "Get all todo lists of current user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "lists"
+                ],
+                "summary": "Get all lists",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer Auth, pls add bearer before",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "onject"
+                        }
+                    }
+                }
+            },
             "post": {
-                "description": "Get all items from the list of current user",
+                "description": "Creating new todo list  for current user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "lists"
+                ],
+                "summary": "Create List",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer Auth, pls add bearer before",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "list info",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.TodoList"
+                        }
+                    },
+                    {
+                        "type": "integer",
+                        "description": "list_id",
+                        "name": "list_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "list_id",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/lists/{id}": {
+            "get": {
+                "description": "Get list by a specific id for current user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "lists"
+                ],
+                "summary": "Get list by Id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer Auth, pls add bearer before",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "list_id",
+                        "name": "list_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.TodoItem"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Updating a List by a its id for current user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "lists"
+                ],
+                "summary": "Update a List",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer Auth, pls add bearer before",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": " update item info",
+                        "name": "payload",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.UpdateListInput"
+                        }
+                    },
+                    {
+                        "type": "integer",
+                        "description": "list_id",
+                        "name": "list_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Deleting a list by a its id for current user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "lists"
+                ],
+                "summary": "Delete a list",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Bearer Auth, pls add bearer before",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "list_id",
+                        "name": "list_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "status",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/lists/{list_id}/items": {
+            "get": {
+                "description": "Get all items from the given list of current user",
                 "consumes": [
                     "application/json"
                 ],
@@ -86,33 +360,22 @@ const docTemplate = `{
                         "required": true
                     },
                     {
-                        "description": "item info",
-                        "name": "payload",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.TodoItem"
-                        }
-                    },
-                    {
                         "type": "integer",
-                        "description": "id",
-                        "name": "id",
+                        "description": "list_id",
+                        "name": "list_id",
                         "in": "path",
                         "required": true
                     }
                 ],
                 "responses": {
-                    "201": {
-                        "description": "id",
+                    "200": {
+                        "description": "OK",
                         "schema": {
-                            "type": "string"
+                            "type": "onject"
                         }
                     }
                 }
-            }
-        },
-        "/api/lists/{id}/items": {
+            },
             "post": {
                 "description": "Creating new item inside the list for current user",
                 "consumes": [
@@ -144,8 +407,8 @@ const docTemplate = `{
                     },
                     {
                         "type": "integer",
-                        "description": "id",
-                        "name": "id",
+                        "description": "list_id",
+                        "name": "list_id",
                         "in": "path",
                         "required": true
                     }
@@ -180,7 +443,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.signInInput"
+                            "$ref": "#/definitions/models.SignInInput"
                         }
                     }
                 ],
@@ -230,7 +493,7 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "handler.signInInput": {
+        "models.SignInInput": {
             "type": "object",
             "required": [
                 "password",
@@ -265,6 +528,48 @@ const docTemplate = `{
                 }
             }
         },
+        "models.TodoList": {
+            "type": "object",
+            "required": [
+                "title"
+            ],
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UpdateItemInput": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "done": {
+                    "type": "boolean"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.UpdateListInput": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                }
+            }
+        },
         "models.User": {
             "type": "object",
             "required": [
@@ -289,12 +594,12 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "",
-	Host:             "",
-	BasePath:         "",
+	Version:          "1.0",
+	Host:             "localhost:8080",
+	BasePath:         "/",
 	Schemes:          []string{},
-	Title:            "",
-	Description:      "",
+	Title:            "Todo List App",
+	Description:      "Todo list application",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 }

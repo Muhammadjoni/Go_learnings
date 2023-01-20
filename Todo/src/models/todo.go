@@ -44,6 +44,14 @@ type UpdateItemInput struct {
 	Done        *bool   `json:"done"`
 }
 
+type GetAllItemsResponse struct {
+	Data []TodoItem
+}
+
+type GetAllListsResponse struct {
+	Data []TodoList `json:"data"`
+}
+
 // Validate method checks the filling of the fields of the UpdaListInput struct
 func (i UpdateListInput) Validate() error {
 	if i.Title == nil && i.Description == nil {

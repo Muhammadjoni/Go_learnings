@@ -20,36 +20,39 @@ func NewHandler(services *service.Service) *Handler {
 func (h *Handler) SetupRouter() *gin.Engine {
 	router := gin.New()
 
-	docs.SwaggerInfo.BasePath = "/"
+	docs.SwaggerInfo.BasePath = "/api/v1"
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	auth := router.Group("/auth")
+	v1 := router.Group("/api/v1")
 	{
-		auth.POST("/sign-up", h.signUp)
-		auth.POST("/sign-in", h.signIn)
-	}
-
-	api := router.Group("/api", h.userIdentity)
-	{
-		lists := api.Group("/lists")
+		auth := v1.Group("/auth")
 		{
-			lists.POST("", h.createList)
-			lists.GET("", h.getAllList)
-			lists.GET("/:id", h.getListByID)
-			lists.PUT("/:id", h.updateList)
-			lists.DELETE(":id", h.deleteList)
-
-			items := lists.Group(":id/items")
-			{
-				items.POST("", h.createItem)
-				items.GET("", h.getAllItem)
-			}
+			auth.POST("/sign-up", h.signUp)
+			auth.POST("/sign-in", h.signIn)
 		}
-		items := api.Group("items")
+
+		api := v1.Group("/api", h.userIdentity)
 		{
-			items.GET("/:id", h.getItemByID)
-			items.PUT("/:id", h.updateItem)
-			items.DELETE("/:id", h.deleteItem)
+			lists := api.Group("/lists")
+			{
+				lists.POST("", h.createList)
+				lists.GET("", h.getAllList)
+				lists.GET("/:id", h.getListByID)
+				lists.PUT("/:id", h.updateList)
+				lists.DELETE(":id", h.deleteList)
+
+				items := lists.Group(":id/items")
+				{
+					items.POST("", h.createItem)
+					items.GET("", h.getAllItem)
+				}
+			}
+			items := api.Group("items")
+			{
+				items.GET("/:id", h.getItemByID)
+				items.PUT("/:id", h.updateItem)
+				items.DELETE("/:id", h.deleteItem)
+			}
 		}
 	}
 
