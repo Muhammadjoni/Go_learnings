@@ -11,7 +11,7 @@ func init() {
 }
 
 func mig_20221230145525_init_schema_up(tx *sql.Tx) error {
-	_, err := tx.Exec("CREATE TABLE todo ( id int, task varchar(255), done boolean );")
+	_, err := tx.Exec("CREATE TABLE users ( id serial not null unique, name varchar(255) not null, username varchar(255) not null unique, password_hash varchar(255) not null );")
 	if err != nil {
 		return err
 	}
@@ -20,7 +20,7 @@ func mig_20221230145525_init_schema_up(tx *sql.Tx) error {
 }
 
 func mig_20221230145525_init_schema_down(tx *sql.Tx) error {
-	_, err := tx.Exec("DROP TABLE todo")
+	_, err := tx.Exec("DROP TABLE users")
 	if err != nil {
 		return err
 	}

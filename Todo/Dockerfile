@@ -1,6 +1,10 @@
 # FROM golang:1.19.4
 
-# WORKDIR /app
+# RUN mkdir /todo
+
+# ADD . /todo
+
+# WORKDIR /todo
 
 # COPY go.mod .
 # COPY go.sum .
@@ -10,9 +14,16 @@
 
 # COPY *.go ./
 
-# RUN go build -o /todo
+# RUN go build -o main ./main.go
 
 # EXPOSE 8080
 
-# CMD [ "/todo"]
+# CMD [ "/todo/main"]
 
+FROM golang:latest
+
+WORKDIR /todo_1
+COPY . .
+RUN go build -o main .
+EXPOSE 8080
+CMD ["./"]
