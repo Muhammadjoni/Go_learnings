@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+option go_package = "grpc_prtc/usermgmt";
+
+package usermgmt;
+
+
+service UserManagement {
+    rpc CreateUser(NewUser) returns (User) {}
+    // rpc GetUser() returns (User) {}
+}
+
+message NewUser {
+    string name = 1;
+    int32 age = 2;
+}
+ 
+message User {
+    int32 id = 1; 
+    string name = 2;
+    int32 age = 3;
+}
