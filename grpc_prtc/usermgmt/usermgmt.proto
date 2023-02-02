@@ -7,6 +7,7 @@ package usermgmt;
 
 service UserManagement {
     rpc CreateUser(NewUser) returns (User) {}
+    rpc GetUsers(GetUsersParams) returns (Userlist) {}
     // rpc GetUser() returns (User) {}
 }
 
@@ -20,3 +21,12 @@ message User {
     string name = 2;
     int32 age = 3;
 }
+
+message GetUsersParams {
+
+}
+
+message Userlist {
+    repeated User users = 1;
+}
+  
