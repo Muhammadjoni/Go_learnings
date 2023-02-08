@@ -24,6 +24,8 @@ const _ = grpc.SupportPackageIsVersion7
 type UserManagementClient interface {
 	CreateUser(ctx context.Context, in *NewUser, opts ...grpc.CallOption) (*User, error)
 	GetUsers(ctx context.Context, in *GetUsersParams, opts ...grpc.CallOption) (*Userlist, error)
+	// rpc GetUser() returns (User) {}
+	UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error)
 }
 
 type userManagementClient struct {
@@ -52,12 +54,23 @@ func (c *userManagementClient) GetUsers(ctx context.Context, in *GetUsersParams,
 	return out, nil
 }
 
+func (c *userManagementClient) UpdateUser(ctx context.Context, in *UpdateUserRequest, opts ...grpc.CallOption) (*UpdateUserResponse, error) {
+	out := new(UpdateUserResponse)
+	err := c.cc.Invoke(ctx, "/usermgmt.UserManagement/UpdateUser", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // UserManagementServer is the server API for UserManagement service.
 // All implementations must embed UnimplementedUserManagementServer
 // for forward compatibility
 type UserManagementServer interface {
 	CreateUser(context.Context, *NewUser) (*User, error)
 	GetUsers(context.Context, *GetUsersParams) (*Userlist, error)
+	// rpc GetUser() returns (User) {}
+	UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error)
 	mustEmbedUnimplementedUserManagementServer()
 }
 
@@ -70,6 +83,9 @@ func (UnimplementedUserManagementServer) CreateUser(context.Context, *NewUser) (
 }
 func (UnimplementedUserManagementServer) GetUsers(context.Context, *GetUsersParams) (*Userlist, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUsers not implemented")
+}
+func (UnimplementedUserManagementServer) UpdateUser(context.Context, *UpdateUserRequest) (*UpdateUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
 }
 func (UnimplementedUserManagementServer) mustEmbedUnimplementedUserManagementServer() {}
 
@@ -120,6 +136,24 @@ func _UserManagement_GetUsers_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _UserManagement_UpdateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateUserRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserManagementServer).UpdateUser(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/usermgmt.UserManagement/UpdateUser",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserManagementServer).UpdateUser(ctx, req.(*UpdateUserRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // UserManagement_ServiceDesc is the grpc.ServiceDesc for UserManagement service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -134,6 +168,10 @@ var UserManagement_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUsers",
 			Handler:    _UserManagement_GetUsers_Handler,
+		},
+		{
+			MethodName: "UpdateUser",
+			Handler:    _UserManagement_UpdateUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
