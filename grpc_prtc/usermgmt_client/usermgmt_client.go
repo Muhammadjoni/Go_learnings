@@ -33,12 +33,12 @@ func main() {
 	new_users["Alice"] = 43
 	new_users["Bob"] = 31
 
-	for name, age := range new_users {
-		r, err := c.CreateUser(ctx, &pb.NewUser{Name: name, Age: age})
+	for username, age := range new_users {
+		r, err := c.CreateUser(ctx, &pb.NewUser{Username: username, Age: age})
 		if err != nil {
 			log.Fatalf("could not create a user: %v", err)
 		}
-		log.Printf(`Created user: ID: %d NAME: %s AGE: %d`, r.GetId(), r.GetName(), r.GetAge())
+		log.Printf(`Created user: ID: %d USERNAME: %s AGE: %d`, r.GetId(), r.GetUsername(), r.GetAge())
 
 	}
 	params := &pb.GetUsersParams{}

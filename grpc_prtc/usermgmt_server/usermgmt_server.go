@@ -49,6 +49,7 @@ func (s *UserManagementServer) CreateUser(ctx context.Context, in *pb.NewUser) (
 }
 
 func (s *UserManagementServer) GetUsers(ctx context.Context, in *pb.GetUsersParams) (*pb.Userlist, error) {
+
 	return s.user_list, nil
 }
 
