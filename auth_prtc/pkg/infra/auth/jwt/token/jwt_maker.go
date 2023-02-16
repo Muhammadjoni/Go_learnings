@@ -1,7 +1,7 @@
 package token
 
 import (
-	ap "auth_prtc/auth"
+	ap "auth_prtc/pkg/infra/auth"
 	"errors"
 	"fmt"
 	"time"
@@ -17,11 +17,11 @@ type JWTMaker struct {
 }
 
 // create a new JWTMaker
-func NewJWTMaker(secretKey string) (Maker, error) {
+func NewJWTMaker(secretKey string) (ap.Maker, error) {
 	if len(secretKey) < minSecretKeySize {
 		return nil, fmt.Errorf("invalid key size: min size %d", minSecretKeySize)
 	}
-	return &JWTMaker{secretKey}, nil // Waiting for Maker server logicccccccccccccccccccccccc
+	return &JWTMaker{secretKey}, nil
 }
 
 func (maker *JWTMaker) CreateToken(username string, duration time.Duration) (string, *ap.Payload, error) {
