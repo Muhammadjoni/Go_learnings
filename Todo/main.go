@@ -9,29 +9,11 @@ import (
 
 	"log"
 
-	// "gin-todo-prc/pkg/handler"
-
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"go.uber.org/zap"
 )
 
-// type Server struct {
-// 	httpServer *httpServer
-// }
-
-// func db() {
-// 	// var (
-// 	// 	db *sqlx.DB
-// 	// 	err error
-// 	// )
-
-// 	// util.SetupDb()
-// 	// repo := repo.NewRepo(db)
-// 	// services := service.NewService(repo)
-// 	// handler := handler.NewHandler(services)
-
-// }
 var (
 	db *sqlx.DB
 )

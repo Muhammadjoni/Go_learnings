@@ -90,7 +90,7 @@ func Create(name string) error {
 
 func Init(db *sqlx.DB) (*Migrator, error) {
 	migrator.db = db
-	fmt.Println("91")
+
 	// Create `schema_migrations` table to remember which migrations were executed.
 	if _, err := db.Exec(`CREATE TABLE IF NOT EXISTS schema_migrations (
 		version varchar(255)
@@ -98,20 +98,16 @@ func Init(db *sqlx.DB) (*Migrator, error) {
 		fmt.Println("Unable to create `schema_migrations` table", err)
 		return migrator, err
 	}
-	fmt.Println("99")
 
 	// Find out all the executed migrations
 	rows, err := db.Query(`SELECT version FROM schema_migrations;`)
-	fmt.Println("103")
 
 	if err != nil {
 		//return migrator, err
 		panic(err)
 	}
-	fmt.Println("106")
 
 	defer rows.Close()
-	fmt.Println("109")
 
 	// Mark the migrations as Done if it is already executed
 	for rows.Next() {
@@ -120,13 +116,12 @@ func Init(db *sqlx.DB) (*Migrator, error) {
 		if err != nil {
 			return migrator, err
 		}
-		fmt.Println("118")
 
 		if migrator.Migrations[version] != nil {
 			migrator.Migrations[version].done = true
 		}
 	}
-	fmt.Println("124")
+
 	return migrator, err
 
 }
@@ -155,14 +150,12 @@ func (m *Migrator) Up(step int) error {
 			tx.Rollback()
 			return err
 		}
-		fmt.Println("migrator.155")
+
 		if _, err := tx.Exec(`INSERT INTO schema_migrations (version) VALUES ($1)`, mg.Version); err != nil {
 			tx.Rollback()
 			return err
 		}
-		// }`INSERT INTO schema_migrations (version) VALUES ?`
 		fmt.Println("Finished running migration", mg.Version)
-		fmt.Println("migrator.161")
 
 		count++
 	}
